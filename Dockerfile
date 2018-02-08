@@ -13,13 +13,13 @@ RUN useradd -u 1000 -ms /bin/bash $USER
 
 WORKDIR $HOME
 
-#RUN wget "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/1/eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz"
-#RUN tar -xf eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
-#RUN rm eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
+RUN wget "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/1/eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz"
+RUN tar -xf eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
+RUN rm eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
 
 
 #To check why the size of the image is bigger when downloading from container than from downloading outside and adding to container using:
-ADD eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz $HOME
+#ADD eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz $HOME
 
 
 #COPY repast-plugin-2.4/plugins $HOME/eclipse
