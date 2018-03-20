@@ -1,7 +1,7 @@
 FROM openjdk:8
 
-ENV HOME /home/multiot
-ENV USER multiot
+ENV HOME /home/ruser
+ENV USER ruser
 
 RUN apt-get update && apt-get install -y \
 	# For eclipse            
