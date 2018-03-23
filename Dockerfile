@@ -1,41 +1,44 @@
+#Since this is a Dev container, for enabling sharing volumes with host is required to build this way: 
+#docker build --build-arg UID={YOUR HOST UID} -t uolmultiot/repast .
+FROM openjdk:8 as builder
+
+ARG USER=ruser 
+ARG UID=1000 
+ENV ECP_URL=http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/oxygen/1a/
+ENV ECP_PKG=eclipse-committers-oxygen-1a-linux-gtk-x86_64.tar.gz
+ENV GRECLIPSE=http://dist.springsource.org/snapshot/GRECLIPSE/e4.7/
+ENV REPAST=https://repocafe.cels.anl.gov/repos/repast
+
+RUN useradd -u $UID -ms /bin/bash $USER
+
+#eclipse
+WORKDIR /root/
+RUN wget "$ECP_URL$ECP_PKG" \
+&& tar -xf $ECP_PKG \
+&& rm $ECP_PKG \
+&& sed -i 's/"-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"//g' /root/eclipse/eclipse
+
+#repast
+RUN ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy.eclipse.feature.feature.group \
+&& ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$REPAST -installIU repast.simphony.feature.feature.group
+
 FROM openjdk:8
 
-ENV HOME /home/ruser
-ENV USER ruser
+#Default user
+ARG USER=ruser 
+ARG UID=1000 
 
 RUN apt-get update && apt-get install -y \
 	# For eclipse            
 	libx11-6 libxext-dev libxrender-dev libxtst-dev libcanberra-gtk-module \
         --no-install-recommends \
-        && rm -rf /var/lib/apt/lists/* 
+	&& apt-get clean \  
+        && rm -rf /var/lib/apt/lists/* \
+	#Add user for enabling sharing of volume with host	
+	&& useradd -u $UID -s /bin/bash $USER \
+	&& mkdir -p /home/$USER/workspace \
+	&& chown -R $USER:$USER /home/$USER
 
-RUN useradd -u 1000 -ms /bin/bash $USER
-
-WORKDIR $HOME
-
-RUN wget "http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/neon/1/eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz"
-RUN tar -xf eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
-RUN rm eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz
-
-
-#To check why the size of the image is bigger when downloading from container than from downloading outside and adding to container using:
-#ADD eclipse-committers-neon-1-linux-gtk-x86_64.tar.gz $HOME
-
-
-#COPY repast-plugin-2.4/plugins $HOME/eclipse
-#COPY repast-plugin-2.4/features $HOME/features
-
-RUN mkdir -p /home/multiot/workspace
-
-RUN chown -R $USER:$USER $HOME
-
-RUN sed -i 's/"-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"//g' $HOME/eclipse/eclipse
-
-USER $USER 
-
-#ADDITIONAL MANUAL STEPS:
-#installation of Groovy via eclipse add new software: http://dist.springsource.org/snapshot/GRECLIPSE/e4.6/
-#Extra Groovy Compilers, Groovy-Eclipse and Uncategorized
-#installation of Repast via eclipse add new software:
-#The groovy compiler version must be set to anything in the 2.0. version line
-#if repast missing: https://repocafe.cels.anl.gov/repos/repast
+USER $USER
+WORKDIR /home/$USER
+COPY --from=builder /root/eclipse ./eclipse
