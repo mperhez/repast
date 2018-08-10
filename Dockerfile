@@ -2,14 +2,14 @@
 #docker build --build-arg UID={YOUR HOST UID} -t uolmultiot/repast .
 FROM openjdk:8 as builder
 
-ARG USER=ruser 
+ARG UNAME=ruser 
 ARG UID=1000 
 ENV ECP_URL=http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/oxygen/1a/
 ENV ECP_PKG=eclipse-committers-oxygen-1a-linux-gtk-x86_64.tar.gz
 ENV GRECLIPSE=http://dist.springsource.org/snapshot/GRECLIPSE/e4.7/
 ENV REPAST=https://repocafe.cels.anl.gov/repos/repast
 
-RUN useradd -u $UID -ms /bin/bash $USER
+RUN useradd -u $UID -ms /bin/bash $UNAME
 
 #eclipse
 WORKDIR /root/
@@ -25,7 +25,7 @@ RUN ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -re
 FROM openjdk:8
 
 #Default user
-ARG USER=ruser 
+ARG UNAME=ruser 
 ARG UID=1000 
 
 RUN apt-get update && apt-get install -y \
@@ -35,10 +35,10 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean \  
         && rm -rf /var/lib/apt/lists/* \
 	#Add user for enabling sharing of volume with host	
-	&& useradd -u $UID -s /bin/bash $USER \
-	&& mkdir -p /home/$USER/workspace \
-	&& chown -R $USER:$USER /home/$USER
+	&& useradd -u $UID -s /bin/bash $UNAME \
+	&& mkdir -p /home/$UNAME/workspace \
+	&& chown -R $UNAME:$UNAME /home/$UNAME
 
-USER $USER
-WORKDIR /home/$USER
+USER $UNAME
+WORKDIR /home/$UNAME
 COPY --from=builder /root/eclipse ./eclipse
