@@ -24,15 +24,15 @@ For running:
 
 ### Troubleshooting
 
-* For the eclipse GUI to work you might need to enable connection to xserver from the container, on host terminal run:
+* For the eclipse GUI to work you might need to enable connection to xserver from the container, on the host terminal:
 
 1) xhost +
-2) run container
-3) run: docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerId -> on the running container to find out its ip
+2) Run the container (See command for running container above)
+3) docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerId 
 4) xhost -
-5) xhost +local: $IP
+5) xhost +local: $IP (IP obtained in step 3)
 
 
-* You might need to configure Groovy compiler version 2.4 at project and workspace level.
+* From within eclipse, you might need to configure Groovy compiler version 2.4 at project and workspace level. Project -> Groovy Compiler  and Window -> Preferences -> Groovy -> Compiler -> Switch to 2.4.xx.
 
 
