@@ -20,10 +20,6 @@ RUN wget "$ECP_URL$ECP_PKG" \
 
 #repast
 RUN ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy.eclipse.feature.feature.group \
-&& ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy24.feature.feature.group \
-&& ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy.compilerless.feature.feature.group \
-&& ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy25.feature.feature.group \
-&& ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$GRECLIPSE -installIU org.codehaus.groovy.m2eclipse.feature.feature.group \
 && ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,$REPAST -installIU repast.simphony.feature.feature.group
 
 FROM openjdk:8
