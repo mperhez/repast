@@ -1,6 +1,6 @@
 ## Repast Simphony Development Environment
 
-This is a basic eclipse-based image with the [Repast Simphony] (https://repast.github.io/) development environment.  
+This is a basic eclipse-based image with the [Repast Simphony](https://repast.github.io/) development environment.  
 
 
 ### Tags
