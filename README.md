@@ -35,7 +35,7 @@ For running:
 
 * From within eclipse, you might need to configure Groovy compiler version 2.4 at project and workspace level. Project -> Groovy Compiler  and Window -> Preferences -> Groovy -> Compiler -> Switch to 2.4.xx.
 
-### Acknowledgments
+### Acknowledgements
 
 * Some ideas for script and adaptation of running command from this [blog.](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/)
 
