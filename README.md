@@ -37,6 +37,6 @@ For running:
 
 ### Acknowledgments
 
-* Running command is an adaptation this [blog.](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/)
+* Some ideas for script and adaptation of running command from this [blog.](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/)
 
 
