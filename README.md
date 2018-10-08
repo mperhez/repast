@@ -19,7 +19,7 @@ If you need to rebuild the image, use the following command (with your host UID 
 
 For running:
 
-    docker run --name repast -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v {HOST WORKSPACE PATH}:/home/{YOUR HOST UNAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse
+    docker run --name repast -it -e DISPLAY -v $XAUTHORITY:/home/{YOUR HOST USER NAME}/.Xauthority --net=host -v {YOUR HOST WORKSPACE PATH}:/home/{YOUR CONTAINER USER NAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse
 
 
 ### Troubleshooting
@@ -34,5 +34,9 @@ For running:
 
 
 * From within eclipse, you might need to configure Groovy compiler version 2.4 at project and workspace level. Project -> Groovy Compiler  and Window -> Preferences -> Groovy -> Compiler -> Switch to 2.4.xx.
+
+### Acknowledgments
+
+* Running command is an adaptation this [blog.](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/)
 
 
