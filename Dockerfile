@@ -2,7 +2,8 @@
 #docker build --build-arg UID={YOUR HOST UID} -t uolmultiot/repast .
 FROM openjdk:8 as builder
 
-ARG UNAME=ruser 
+#Find out your user name (UNAME), ID and group Id (GRID) by running in the host: id
+ARG UNAME= mperhez
 ARG UID=1001
 ENV ECP_URL=http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/oxygen/1a/
 ENV ECP_PKG=eclipse-committers-oxygen-1a-linux-gtk-x86_64.tar.gz
@@ -29,19 +30,23 @@ RUN ./eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -re
 FROM openjdk:8
 
 #Default user (Replace with the User name {UNAME}, id {UID} and Group Id {GRID} from your host)
-ARG UNAME=ruser 
+ARG UNAME=mperhez 
 ARG UID=1001
 ARG GRID=1001
 
-RUN apt-get update && apt-get install -y \
-	#sudo
+RUN apt-get update  \
+	apt-get install -y \
+	#sudo  
 	sudo \
+	#2D/3D rendering: opengl libraries & video tools (for debugging video problems)
+	mesa-utils libgl1-mesa-dri \
 	# For eclipse            
 	libx11-6 libxext-dev libxrender-dev libxtst-dev libcanberra-gtk3-module \
         --no-install-recommends \
 	&& apt-get clean \  
-        && rm -rf /var/lib/apt/lists/* \
-	#For enabling sharing of volume with host	
+       && rm -rf /var/lib/apt/lists/* \
+	#For enabling sharing of volume with host
+	&& useradd -u $UID -ms /bin/bash $UNAME	\
 	&& export uid=$UID gid=$GRID && \
 	mkdir -p /home/${UNAME}/workspace && \
 	echo "${UNAME}:x:${uid}:${gid}:${UNAME},,,:/home/${UNAME}:/bin/bash" >> /etc/passwd && \
