@@ -3,7 +3,7 @@
 FROM openjdk:8 as builder
 
 #Find out your user name (UNAME), ID and group Id (GRID) by running in the host: id
-ARG UNAME= mperhez
+ARG UNAME=mperhez
 ARG UID=1001
 ENV ECP_URL=http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/technology/epp/downloads/release/oxygen/1a/
 ENV ECP_PKG=eclipse-committers-oxygen-1a-linux-gtk-x86_64.tar.gz
@@ -35,7 +35,7 @@ ARG UID=1001
 ARG GRID=1001
 
 RUN apt-get update  \
-	apt-get install -y \
+	&& apt-get install -y \
 	#sudo  
 	sudo \
 	#2D/3D rendering: opengl libraries & video tools (for debugging video problems)
