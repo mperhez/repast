@@ -19,18 +19,23 @@ If you need to rebuild the image, use the following command (with your host UID 
 
 For running:
 
-    docker run --name repast -it -e DISPLAY -v $XAUTHORITY:/home/{YOUR HOST USER NAME}/.Xauthority --net=host -v {YOUR HOST WORKSPACE PATH}:/home/{YOUR CONTAINER USER NAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse
-docker run -ti --name repast -e DISPLAY -v="/tmp/.X11-unix:/tmp/.X11-unix:rw" -v $XAUTHORITY:/home/{YOUR UNAME}/.Xauthority --net=host --device=/dev/dri/card0:/dev/dri/card0 --device=/dev/dri/renderD128:/dev/dri/renderD128 --privileged -v {YOUR HOST WORKSPACE PATH}:/home/{YOUR UNAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse
+* With no opengl support:
+
+`docker run --name repast -it -e DISPLAY -v $XAUTHORITY:/home/{YOUR HOST USER NAME}/.Xauthority --net=host -v {YOUR HOST WORKSPACE PATH}:/home/{YOUR CONTAINER USER NAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse`
+
+* With opengl:
+
+`docker run -ti --name repast -e DISPLAY -v="/tmp/.X11-unix:/tmp/.X11-unix:rw" -v $XAUTHORITY:/home/{YOUR UNAME}/.Xauthority --net=host --device=/dev/dri/card0:/dev/dri/card0 --device=/dev/dri/renderD128:/dev/dri/renderD128 --privileged -v {YOUR HOST WORKSPACE PATH}:/home/{YOUR UNAME}/eclipse-workspace uolmultiot/repast:latest ./eclipse/eclipse`
 
 ### Troubleshooting
 
 * For the eclipse GUI to work you might need to enable connection to xserver from the container, on the host terminal:
 
-	1) `xhost +`
-	2) Run the container (See command for running container above)
-	3) `docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerId`
-	4) `xhost -`
-	5) `xhost +local: $IP` (IP obtained in step 3)
+1) `xhost +`
+2) Run the container (See command for running container above)
+3) `docker inspect --format '{{ .NetworkSettings.IPAddress }}' $containerId`
+4) `xhost -`
+5) `xhost +local: $IP` (IP obtained in step 3)
 
 * From within eclipse, you might need to configure Groovy compiler version 2.4 at project and workspace level. Project -> Groovy Compiler  and Window -> Preferences -> Groovy -> Compiler -> Switch to 2.4.xx.
 
@@ -44,7 +49,7 @@ For me, the above run command works for  Intel UHD 620 Graphics. You cand find o
 	`sudo glxinfo | grep "OpenGL version string" | rev | cut -d" " -f1 | rev` 
 you should get the version of driver running, normally the same on the host.
 
-* You can read this [blog](http://gernotklingler.com/blog/howto-get-hardware-accelerated-opengl-support-docker/) that show alternative solutions for Nvidia cards.
+* You can read this [blog](http://gernotklingler.com/blog/howto-get-hardware-accelerated-opengl-support-docker/) that shows alternative solutions for Nvidia cards.
 
 
 ### Acknowledgements
